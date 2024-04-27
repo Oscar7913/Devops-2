@@ -1,0 +1,21 @@
+name: CD-Storage-Service
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install Docker and Postman
+        uses: docker-practice/actions-setup-docker@master
+      
+      - name: Run Postman
+        run: docker run -v "$PWD:/etc/newman" -t postman/newman:latest run "/etc/newman/storageservice.postman_collection.json" --reporters="cli"
+
